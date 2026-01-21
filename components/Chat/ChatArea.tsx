@@ -4,7 +4,7 @@ import { useChatContext } from '@/context/ChatContext'
 import { MessageList } from './MessageList'
 import { InputArea } from './InputArea'
 import { WelcomeScreen } from './WelcomeScreen'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Zap } from 'lucide-react'
 
 export function ChatArea() {
   const { currentChat, isLoading, error, sendMessage, stopGeneration } = useChatContext()
@@ -12,10 +12,13 @@ export function ChatArea() {
   const showWelcome = !currentChat || currentChat.messages.length === 0
 
   return (
-    <div className="flex flex-col h-full relative">
-      {/* Header - Model selector style */}
-      <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-center py-3">
-        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+    <div className="flex flex-col h-full relative bg-gradient-to-b from-background via-background to-muted/20">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-center py-4">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/50 hover:bg-background/80 hover:border-border transition-all duration-200 shadow-sm">
+          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+            <Zap className="w-3 h-3 text-white" />
+          </div>
           <span className="text-sm font-semibold text-foreground">HealthChat</span>
           <ChevronDown className="w-4 h-4 text-muted-foreground" />
         </button>
@@ -35,8 +38,10 @@ export function ChatArea() {
 
       {/* Error message */}
       {error && (
-        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-2 rounded-xl text-sm shadow-lg">
-          {error}
+        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 animate-fade-in">
+          <div className="bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-5 py-3 rounded-2xl text-sm shadow-xl backdrop-blur">
+            {error}
+          </div>
         </div>
       )}
 

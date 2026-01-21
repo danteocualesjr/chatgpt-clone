@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, KeyboardEvent, useRef, useEffect, DragEvent } from 'react'
-import { ArrowUp, Square, Paperclip, Mic, X, Image as ImageIcon, File } from 'lucide-react'
+import { ArrowUp, Square, Paperclip, Mic, X, ImageIcon, FileText } from 'lucide-react'
 
 interface AttachedFile {
   id: string
@@ -34,8 +34,6 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
   const handleFiles = (files: FileList | null) => {
     if (!files) return
 
-    const newFiles: AttachedFile[] = []
-    
     Array.from(files).forEach((file) => {
       const id = Math.random().toString(36).substring(7)
       const isImage = file.type.startsWith('image/')
@@ -121,23 +119,25 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
   }
 
   return (
-    <div className="pb-4 px-4">
+    <div className="pb-6 px-4">
       <div className="max-w-3xl mx-auto">
         <div
-          className={`relative flex flex-col bg-muted/50 rounded-3xl border transition-all ${
+          className={`relative flex flex-col rounded-3xl border transition-all duration-300 shadow-lg ${
             isDragging 
-              ? 'border-primary border-2 bg-primary/5' 
-              : 'border-border'
-          } shadow-sm`}
+              ? 'border-primary bg-primary/5 shadow-primary/20' 
+              : 'bg-card border-border shadow-black/5 dark:shadow-black/20'
+          }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
           {/* Drag overlay */}
           {isDragging && (
-            <div className="absolute inset-0 flex items-center justify-center bg-primary/5 rounded-3xl z-10 pointer-events-none">
+            <div className="absolute inset-0 flex items-center justify-center bg-primary/5 rounded-3xl z-10 pointer-events-none backdrop-blur-sm">
               <div className="text-center">
-                <ImageIcon className="w-8 h-8 text-primary mx-auto mb-2" />
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                  <ImageIcon className="w-7 h-7 text-white" />
+                </div>
                 <p className="text-sm font-medium text-primary">Drop files here</p>
               </div>
             </div>
@@ -145,14 +145,11 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
 
           {/* Attached files preview */}
           {attachedFiles.length > 0 && (
-            <div className="flex flex-wrap gap-2 p-3 pb-0">
+            <div className="flex flex-wrap gap-2 p-3 pb-0 animate-fade-in">
               {attachedFiles.map((file) => (
-                <div
-                  key={file.id}
-                  className="relative group"
-                >
+                <div key={file.id} className="relative group animate-fade-in">
                   {file.type === 'image' && file.preview ? (
-                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-border">
+                    <div className="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-border shadow-md">
                       <img
                         src={file.preview}
                         alt={file.file.name}
@@ -160,18 +157,18 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
                       />
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-background border border-border">
-                      <File className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-xs text-foreground max-w-[100px] truncate">
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-muted border border-border">
+                      <FileText className="w-5 h-5 text-muted-foreground" />
+                      <span className="text-sm text-foreground max-w-[120px] truncate">
                         {file.file.name}
                       </span>
                     </div>
                   )}
                   <button
                     onClick={() => removeFile(file.id)}
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg hover:scale-110"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ))}
@@ -183,7 +180,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
             {/* Attachment button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex-shrink-0 p-3 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex-shrink-0 p-4 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Attach file"
             >
               <Paperclip className="w-5 h-5" />
@@ -204,20 +201,17 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               onPaste={handlePaste}
-              placeholder="Ask anything"
+              placeholder="Ask anything about health..."
               disabled={isLoading}
               rows={1}
-              className="flex-1 resize-none bg-transparent py-3.5 text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px]"
+              className="flex-1 resize-none bg-transparent py-4 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px]"
             />
 
             {/* Right side buttons */}
-            <div className="flex items-center gap-1 pr-2">
-              {/* Status dot */}
-              <div className="w-2 h-2 rounded-full bg-primary mr-1" />
-              
+            <div className="flex items-center gap-2 pr-3 pb-3">
               {/* Microphone button */}
               <button
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
                 aria-label="Voice input"
               >
                 <Mic className="w-5 h-5" />
@@ -227,27 +221,27 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               {isLoading ? (
                 <button
                   onClick={onStop}
-                  className="p-2 rounded-full bg-foreground text-background hover:bg-foreground/90 transition-colors"
+                  className="p-2.5 rounded-xl bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg"
                   aria-label="Stop generation"
                 >
-                  <Square className="w-4 h-4" fill="currentColor" />
+                  <Square className="w-5 h-5" fill="currentColor" />
                 </button>
               ) : (
                 <button
                   onClick={handleSend}
                   disabled={!input.trim() && attachedFiles.length === 0}
-                  className="p-2 rounded-full bg-foreground text-background hover:bg-foreground/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/25 disabled:shadow-none"
                   aria-label="Send message"
                 >
-                  <ArrowUp className="w-4 h-4" strokeWidth={2.5} />
+                  <ArrowUp className="w-5 h-5" strokeWidth={2.5} />
                 </button>
               )}
             </div>
           </div>
         </div>
         
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          HealthChat can make mistakes. Consult a healthcare professional for medical advice.
+        <p className="text-xs text-muted-foreground/60 mt-3 text-center">
+          HealthChat provides information only. Always consult a healthcare professional for medical advice.
         </p>
       </div>
     </div>

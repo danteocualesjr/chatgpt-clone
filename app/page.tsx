@@ -7,8 +7,10 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const isDark = localStorage.getItem('darkMode') === 'true'
     setDarkMode(isDark)
     if (isDark) {
@@ -27,20 +29,22 @@ export default function Home() {
     }
   }
 
+  if (!mounted) return null
+
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
       <main className="flex-1 flex flex-col min-w-0 relative">
         <ChatArea />
         
-        {/* Dark mode toggle - top right */}
+        {/* Dark mode toggle */}
         <button
           onClick={toggleDarkMode}
-          className="absolute top-3 right-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors z-10"
+          className="absolute top-4 right-4 p-2.5 rounded-xl bg-background/60 backdrop-blur-xl border border-border/50 hover:bg-background/80 transition-all duration-200 shadow-sm z-10"
           aria-label="Toggle dark mode"
         >
           {darkMode ? (
-            <Sun className="w-5 h-5 text-foreground" />
+            <Sun className="w-5 h-5 text-amber-500" />
           ) : (
             <Moon className="w-5 h-5 text-foreground" />
           )}

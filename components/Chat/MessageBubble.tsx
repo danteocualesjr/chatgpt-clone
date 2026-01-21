@@ -1,7 +1,7 @@
 'use client'
 
 import { Message } from '@/lib/types'
-import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Heart, File, Download } from 'lucide-react'
+import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Heart, FileText } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
@@ -20,21 +20,19 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Don't render empty assistant messages (loading state handled separately)
+  // Loading state for assistant
   if (!message.content && message.role === 'assistant') {
     return (
-      <div className="py-6">
+      <div className="py-6 animate-fade-in">
         <div className="flex gap-4">
-          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-            <Heart className="w-3.5 h-3.5 text-white" fill="white" />
+          <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <Heart className="w-4 h-4 text-white" fill="white" />
           </div>
-          <div className="flex-1 pt-0.5">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
+          <div className="flex-1 pt-1">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         </div>
@@ -43,35 +41,35 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
   }
 
   return (
-    <div className="py-6">
+    <div className="py-6 animate-fade-in">
       <div className="flex gap-4">
-        {/* Avatar */}
+        {/* Avatar for assistant */}
         {!isUser && (
-          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-            <Heart className="w-3.5 h-3.5 text-white" fill="white" />
+          <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <Heart className="w-4 h-4 text-white" fill="white" />
           </div>
         )}
 
         {/* Content */}
-        <div className={`flex-1 ${isUser ? 'ml-11' : ''}`}>
+        <div className={`flex-1 ${isUser ? 'ml-12' : ''}`}>
           {isUser ? (
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex flex-col items-end gap-3">
               {/* Attachments */}
               {message.attachments && message.attachments.length > 0 && (
                 <div className="flex flex-wrap gap-2 justify-end max-w-[85%]">
                   {message.attachments.map((attachment) => (
-                    <div key={attachment.id}>
+                    <div key={attachment.id} className="animate-fade-in">
                       {attachment.type === 'image' ? (
-                        <div className="rounded-2xl overflow-hidden border border-border max-w-xs">
+                        <div className="rounded-2xl overflow-hidden border-2 border-border shadow-lg max-w-xs">
                           <img
                             src={attachment.url}
                             alt={attachment.name}
-                            className="max-w-full h-auto max-h-64 object-contain"
+                            className="max-w-full h-auto max-h-72 object-contain"
                           />
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-muted border border-border">
-                          <File className="w-4 h-4 text-muted-foreground" />
+                        <div className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-muted border border-border">
+                          <FileText className="w-5 h-5 text-muted-foreground" />
                           <span className="text-sm text-foreground">{attachment.name}</span>
                         </div>
                       )}
@@ -82,8 +80,8 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
               
               {/* Text content */}
               {message.content && (
-                <div className="bg-muted rounded-3xl px-5 py-3 max-w-[85%]">
-                  <p className="text-foreground whitespace-pre-wrap">{message.content}</p>
+                <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl rounded-br-lg px-5 py-3 max-w-[85%] shadow-lg shadow-emerald-500/20">
+                  <p className="text-white whitespace-pre-wrap">{message.content}</p>
                 </div>
               )}
             </div>
@@ -103,7 +101,7 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                     code: ({ children, className }) => {
                       const isInline = !className
                       return isInline ? (
-                        <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground">
+                        <code className="bg-muted px-2 py-1 rounded-lg text-sm font-mono text-foreground">
                           {children}
                         </code>
                       ) : (
@@ -111,21 +109,21 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                       )
                     },
                     pre: ({ children }) => (
-                      <pre className="bg-muted p-4 rounded-xl overflow-x-auto mb-4 text-sm">
+                      <pre className="bg-muted/70 p-4 rounded-2xl overflow-x-auto mb-4 text-sm border border-border">
                         {children}
                       </pre>
                     ),
                     h1: ({ children }) => (
-                      <h1 className="text-xl font-semibold mb-4 mt-6 first:mt-0 text-foreground">{children}</h1>
+                      <h1 className="text-xl font-bold mb-4 mt-6 first:mt-0 text-foreground">{children}</h1>
                     ),
                     h2: ({ children }) => (
-                      <h2 className="text-lg font-semibold mb-3 mt-5 first:mt-0 text-foreground">{children}</h2>
+                      <h2 className="text-lg font-bold mb-3 mt-5 first:mt-0 text-foreground">{children}</h2>
                     ),
                     h3: ({ children }) => (
                       <h3 className="text-base font-semibold mb-2 mt-4 first:mt-0 text-foreground">{children}</h3>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote className="border-l-2 border-primary/30 pl-4 italic my-4 text-muted-foreground">
+                      <blockquote className="border-l-3 border-emerald-500/50 pl-4 italic my-4 text-muted-foreground bg-muted/30 py-2 rounded-r-lg">
                         {children}
                       </blockquote>
                     ),
@@ -133,7 +131,7 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                       <strong className="font-semibold text-foreground">{children}</strong>
                     ),
                     a: ({ children, href }) => (
-                      <a href={href} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                      <a href={href} className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
                         {children}
                       </a>
                     ),
@@ -143,30 +141,30 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                 </ReactMarkdown>
               </div>
 
-              {/* Action buttons for assistant messages */}
+              {/* Action buttons */}
               {message.content && (
                 <div className="flex items-center gap-1 mt-4">
                   <button
                     onClick={handleCopy}
-                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
                     aria-label="Copy message"
                   >
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                   </button>
                   <button
-                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
                     aria-label="Good response"
                   >
                     <ThumbsUp className="w-4 h-4" />
                   </button>
                   <button
-                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
                     aria-label="Bad response"
                   >
                     <ThumbsDown className="w-4 h-4" />
                   </button>
                   <button
-                    className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
                     aria-label="Regenerate response"
                   >
                     <RotateCcw className="w-4 h-4" />
