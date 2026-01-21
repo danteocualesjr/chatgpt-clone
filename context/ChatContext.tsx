@@ -1,10 +1,17 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react'
-import { Chat, Message } from '@/lib/types'
+import { Chat, Message, Attachment } from '@/lib/types'
 import { generateId } from '@/lib/utils'
 
 const STORAGE_KEY = 'healthchat-chats'
+
+interface AttachedFile {
+  id: string
+  file: File
+  preview?: string
+  type: 'image' | 'file'
+}
 
 interface ChatContextType {
   chats: Chat[]
@@ -15,7 +22,7 @@ interface ChatContextType {
   createNewChat: () => string
   deleteChat: (chatId: string) => void
   selectChat: (chatId: string) => void
-  sendMessage: (content: string) => Promise<void>
+  sendMessage: (content: string, files?: AttachedFile[]) => Promise<void>
   stopGeneration: () => void
 }
 
@@ -89,18 +96,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     setError(null)
   }, [])
 
-  const updateChatTitle = useCallback((chatId: string, title: string) => {
-    setChats(prev =>
-      prev.map(chat =>
-        chat.id === chatId
-          ? { ...chat, title, updatedAt: new Date() }
-          : chat
-      )
-    )
-  }, [])
-
-  const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim() || isLoading) return
+  const sendMessage = useCallback(async (content: string, files?: AttachedFile[]) => {
+    if ((!content.trim() && (!files || files.length === 0)) || isLoading) return
 
     setError(null)
     setIsLoading(true)
@@ -115,11 +112,21 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       existingMessages = chat?.messages || []
     }
 
+    // Process attachments
+    const attachments: Attachment[] = files?.map(f => ({
+      id: f.id,
+      name: f.file.name,
+      type: f.type,
+      url: f.preview || '',
+      mimeType: f.file.type,
+    })) || []
+
     const userMessage: Message = {
       id: generateId(),
       role: 'user',
       content: content.trim(),
       timestamp: new Date(),
+      attachments: attachments.length > 0 ? attachments : undefined,
     }
 
     const assistantMessageId = generateId()
@@ -136,7 +143,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         if (chat.id !== chatId) return chat
         
         const isFirstMessage = chat.messages.length === 0
-        const newTitle = isFirstMessage ? content.trim().slice(0, 50) : chat.title
+        const newTitle = isFirstMessage ? (content.trim() || 'Image chat').slice(0, 50) : chat.title
         
         return {
           ...chat,
@@ -147,13 +154,39 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       })
     })
 
-    // Prepare API messages
+    // Prepare API messages with image support
     const apiMessages = [
-      ...existingMessages.map(msg => ({
-        role: msg.role,
-        content: msg.content,
-      })),
-      { role: 'user' as const, content: content.trim() },
+      ...existingMessages.map(msg => {
+        if (msg.attachments && msg.attachments.length > 0) {
+          const imageAttachments = msg.attachments.filter(a => a.type === 'image')
+          if (imageAttachments.length > 0) {
+            return {
+              role: msg.role,
+              content: [
+                { type: 'text', text: msg.content || 'What do you see in this image?' },
+                ...imageAttachments.map(a => ({
+                  type: 'image_url',
+                  image_url: { url: a.url }
+                }))
+              ]
+            }
+          }
+        }
+        return { role: msg.role, content: msg.content }
+      }),
+      // Current message
+      attachments.length > 0 && attachments.some(a => a.type === 'image')
+        ? {
+            role: 'user' as const,
+            content: [
+              { type: 'text', text: content.trim() || 'What do you see in this image?' },
+              ...attachments.filter(a => a.type === 'image').map(a => ({
+                type: 'image_url',
+                image_url: { url: a.url }
+              }))
+            ]
+          }
+        : { role: 'user' as const, content: content.trim() },
     ]
 
     // Abort previous request
@@ -171,7 +204,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       })
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.statusText}`)
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || `API error: ${response.statusText}`)
       }
 
       const reader = response.body?.getReader()

@@ -10,6 +10,8 @@ Guidelines:
 - Encourage users to consult healthcare professionals for personal health concerns
 - Be empathetic and supportive in your communication
 - If asked about specific symptoms or conditions, provide general information but strongly recommend professional consultation
+- If images are shared, analyze them from a general health perspective but always recommend professional evaluation
+- Never diagnose conditions from images
 
 Remember: Your goal is to educate and inform, not to diagnose or treat.`
 
@@ -35,20 +37,30 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Check if any message contains images
+    const hasImages = messages.some(msg => 
+      Array.isArray(msg.content) && 
+      msg.content.some((c: any) => c.type === 'image_url')
+    )
+
+    // Use gpt-4o-mini for vision support
+    const model = hasImages ? 'gpt-4o-mini' : 'gpt-4o-mini'
+
     const stream = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model,
       messages: [
         {
           role: 'system',
           content: HEALTHCARE_SYSTEM_PROMPT,
         },
-        ...messages.map((msg: { role: string; content: string }) => ({
+        ...messages.map((msg: any) => ({
           role: msg.role as 'user' | 'assistant',
           content: msg.content,
         })),
       ],
       stream: true,
       temperature: 0.7,
+      max_tokens: 4096,
     })
 
     const encoder = new TextEncoder()

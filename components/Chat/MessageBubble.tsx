@@ -1,7 +1,7 @@
 'use client'
 
 import { Message } from '@/lib/types'
-import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Heart } from 'lucide-react'
+import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Heart, File, Download } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
@@ -55,10 +55,37 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
         {/* Content */}
         <div className={`flex-1 ${isUser ? 'ml-11' : ''}`}>
           {isUser ? (
-            <div className="flex justify-end">
-              <div className="bg-muted rounded-3xl px-5 py-3 max-w-[85%]">
-                <p className="text-foreground whitespace-pre-wrap">{message.content}</p>
-              </div>
+            <div className="flex flex-col items-end gap-2">
+              {/* Attachments */}
+              {message.attachments && message.attachments.length > 0 && (
+                <div className="flex flex-wrap gap-2 justify-end max-w-[85%]">
+                  {message.attachments.map((attachment) => (
+                    <div key={attachment.id}>
+                      {attachment.type === 'image' ? (
+                        <div className="rounded-2xl overflow-hidden border border-border max-w-xs">
+                          <img
+                            src={attachment.url}
+                            alt={attachment.name}
+                            className="max-w-full h-auto max-h-64 object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-muted border border-border">
+                          <File className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm text-foreground">{attachment.name}</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Text content */}
+              {message.content && (
+                <div className="bg-muted rounded-3xl px-5 py-3 max-w-[85%]">
+                  <p className="text-foreground whitespace-pre-wrap">{message.content}</p>
+                </div>
+              )}
             </div>
           ) : (
             <div>
