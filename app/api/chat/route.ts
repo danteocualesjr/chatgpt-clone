@@ -1,23 +1,49 @@
-import { openai, HEALTHCARE_SYSTEM_PROMPT } from '@/lib/openai'
 import { NextRequest } from 'next/server'
+import OpenAI from 'openai'
+
+const HEALTHCARE_SYSTEM_PROMPT = `You are HealthChat, a helpful AI assistant specialized in health and healthcare information. Your role is to provide accurate, evidence-based health information while always emphasizing the importance of consulting with qualified healthcare professionals for medical advice, diagnosis, and treatment.
+
+Guidelines:
+- Provide clear, understandable explanations of health topics
+- Use evidence-based information from reputable sources
+- Always remind users that your responses are informational and not a substitute for professional medical advice
+- Encourage users to consult healthcare professionals for personal health concerns
+- Be empathetic and supportive in your communication
+- If asked about specific symptoms or conditions, provide general information but strongly recommend professional consultation
+
+Remember: Your goal is to educate and inform, not to diagnose or treat.`
 
 export async function POST(req: NextRequest) {
   try {
+    // Check if API key is configured
+    const apiKey = process.env.OPENAI_API_KEY
+    if (!apiKey) {
+      return new Response(
+        JSON.stringify({ error: 'OpenAI API key not configured. Please add OPENAI_API_KEY to your .env.local file.' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const openai = new OpenAI({ apiKey })
+
     const { messages } = await req.json()
 
     if (!messages || !Array.isArray(messages)) {
-      return new Response('Invalid request: messages array required', { status: 400 })
+      return new Response(
+        JSON.stringify({ error: 'Invalid request: messages array required' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
     }
 
     const stream = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
           content: HEALTHCARE_SYSTEM_PROMPT,
         },
         ...messages.map((msg: { role: string; content: string }) => ({
-          role: msg.role,
+          role: msg.role as 'user' | 'assistant',
           content: msg.content,
         })),
       ],
@@ -37,7 +63,8 @@ export async function POST(req: NextRequest) {
           }
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()
-        } catch (error) {
+        } catch (error: any) {
+          console.error('Streaming error:', error)
           controller.error(error)
         }
       },
@@ -52,12 +79,32 @@ export async function POST(req: NextRequest) {
     })
   } catch (error: any) {
     console.error('Chat API error:', error)
+    
+    // Handle specific OpenAI errors
+    if (error?.status === 401) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid OpenAI API key. Please check your OPENAI_API_KEY.' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+    
+    if (error?.status === 429) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+        { status: 429, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (error?.status === 402) {
+      return new Response(
+        JSON.stringify({ error: 'OpenAI billing issue. Please check your OpenAI account.' }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     return new Response(
       JSON.stringify({ error: error.message || 'Failed to process chat request' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }
 }
