@@ -4,7 +4,7 @@ import { useChatContext } from '@/context/ChatContext'
 import { MessageList } from './MessageList'
 import { InputArea } from './InputArea'
 import { WelcomeScreen } from './WelcomeScreen'
-import { ChevronDown, Sparkles } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 export function ChatArea() {
   const { currentChat, isLoading, error, sendMessage, stopGeneration } = useChatContext()
@@ -16,7 +16,6 @@ export function ChatArea() {
       {/* Header - Model selector style */}
       <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-center py-3">
         <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-          <Sparkles className="w-4 h-4 text-primary" />
           <span className="text-sm font-semibold text-foreground">HealthChat</span>
           <ChevronDown className="w-4 h-4 text-muted-foreground" />
         </button>

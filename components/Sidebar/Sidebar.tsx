@@ -1,7 +1,7 @@
 'use client'
 
 import { useChatContext } from '@/context/ChatContext'
-import { Plus, Search, History, Settings, PanelLeft, Sparkles } from 'lucide-react'
+import { Plus, Search, PanelLeft, Heart } from 'lucide-react'
 import { ChatHistory } from './ChatHistory'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -30,8 +30,8 @@ export function Sidebar() {
         {/* Header with logo */}
         <div className="flex items-center justify-between p-3 h-14">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-primary" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <Heart className="w-4 h-4 text-white" fill="white" />
             </div>
           </div>
           <button
@@ -78,7 +78,7 @@ export function Sidebar() {
         {/* Footer */}
         <div className="p-3 border-t border-border">
           <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
               <span className="text-white text-sm font-medium">U</span>
             </div>
             <span className="text-sm font-medium text-foreground">User</span>

@@ -1,7 +1,7 @@
 'use client'
 
 import { Message } from '@/lib/types'
-import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Sparkles } from 'lucide-react'
+import { Copy, Check, RotateCcw, ThumbsUp, ThumbsDown, Heart } from 'lucide-react'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
@@ -25,13 +25,16 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
     return (
       <div className="py-6">
         <div className="flex gap-4">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-primary" />
+          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <Heart className="w-3.5 h-3.5 text-white" fill="white" />
           </div>
-          <div className="flex-1 pt-1">
+          <div className="flex-1 pt-0.5">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              <span className="text-sm text-muted-foreground">Thinking...</span>
+              <div className="flex gap-1">
+                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
             </div>
           </div>
         </div>
@@ -44,16 +47,16 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
       <div className="flex gap-4">
         {/* Avatar */}
         {!isUser && (
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-primary" />
+          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <Heart className="w-3.5 h-3.5 text-white" fill="white" />
           </div>
         )}
 
         {/* Content */}
-        <div className={`flex-1 ${isUser ? 'ml-12' : ''}`}>
+        <div className={`flex-1 ${isUser ? 'ml-11' : ''}`}>
           {isUser ? (
             <div className="flex justify-end">
-              <div className="bg-muted/70 rounded-3xl px-5 py-3 max-w-[85%]">
+              <div className="bg-muted rounded-3xl px-5 py-3 max-w-[85%]">
                 <p className="text-foreground whitespace-pre-wrap">{message.content}</p>
               </div>
             </div>
