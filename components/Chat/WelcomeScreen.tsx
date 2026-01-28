@@ -23,9 +23,6 @@ export function WelcomeScreen({ onSendMessage, disabled }: WelcomeScreenProps) {
           <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/30">
             <Heart className="w-10 h-10 text-white" fill="white" />
           </div>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-background border border-border text-xs font-medium text-muted-foreground shadow-lg">
-            AI Health Assistant
-          </div>
         </div>
 
         {/* Title */}
