@@ -12,7 +12,7 @@ export function ChatArea() {
   const showWelcome = !currentChat || currentChat.messages.length === 0
 
   return (
-    <div className="flex flex-col h-full relative bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="flex flex-col h-full relative bg-gradient-to-b from-background via-background to-muted/20 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.03),transparent_50%)] before:pointer-events-none">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-center py-4 px-4">
         <button className="group flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-background/70 backdrop-blur-xl border border-border/50 hover:bg-background/90 hover:border-border/80 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02]">

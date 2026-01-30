@@ -101,7 +101,7 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                     code: ({ children, className }) => {
                       const isInline = !className
                       return isInline ? (
-                        <code className="bg-muted px-2 py-1 rounded-lg text-sm font-mono text-foreground">
+                        <code className="bg-muted px-2 py-1 rounded-lg text-sm font-mono text-foreground border border-border/50">
                           {children}
                         </code>
                       ) : (
@@ -109,7 +109,7 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                       )
                     },
                     pre: ({ children }) => (
-                      <pre className="bg-muted/70 p-4 rounded-2xl overflow-x-auto mb-4 text-sm border border-border">
+                      <pre className="bg-muted/70 p-4 rounded-2xl overflow-x-auto mb-4 text-sm border border-border shadow-sm">
                         {children}
                       </pre>
                     ),

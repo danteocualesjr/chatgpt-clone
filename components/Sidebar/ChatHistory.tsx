@@ -19,12 +19,12 @@ export function ChatHistory({
 }: ChatHistoryProps) {
   if (chats.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 px-4">
-        <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mb-4">
-          <MessageCircle className="w-6 h-6 text-muted-foreground" />
+      <div className="flex flex-col items-center justify-center py-16 px-4 animate-fade-in">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 shadow-sm">
+          <MessageCircle className="w-8 h-8 text-emerald-500/60" />
         </div>
-        <p className="text-sm text-muted-foreground text-center">No conversations yet</p>
-        <p className="text-xs text-muted-foreground/70 mt-1 text-center">Start a new chat to begin</p>
+        <p className="text-sm font-medium text-foreground text-center mb-1">No conversations yet</p>
+        <p className="text-xs text-muted-foreground/70 text-center">Start a new chat to begin</p>
       </div>
     )
   }
@@ -77,19 +77,19 @@ export function ChatHistory({
                     className={cn(
                       'group relative flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200',
                       isActive
-                        ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20'
-                        : 'hover:bg-foreground/5'
+                        ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-sm'
+                        : 'hover:bg-foreground/5 hover:shadow-sm'
                     )}
                     onClick={() => onSelectChat(chat.id)}
                     style={{ animationDelay: `${(groupIndex * 50) + (chatIndex * 30)}ms` }}
                   >
                     <MessageCircle className={cn(
-                      'w-4 h-4 flex-shrink-0 transition-colors',
-                      isActive ? 'text-emerald-500' : 'text-muted-foreground'
+                      'w-4 h-4 flex-shrink-0 transition-all duration-200',
+                      isActive ? 'text-emerald-500 scale-110' : 'text-muted-foreground group-hover:text-foreground group-hover:scale-110'
                     )} />
                     <span className={cn(
-                      'flex-1 text-sm truncate transition-colors',
-                      isActive ? 'text-foreground font-medium' : 'text-foreground/80'
+                      'flex-1 text-sm truncate transition-colors duration-200',
+                      isActive ? 'text-foreground font-medium' : 'text-foreground/80 group-hover:text-foreground'
                     )}>
                       {chat.title}
                     </span>
@@ -98,7 +98,7 @@ export function ChatHistory({
                         e.stopPropagation()
                         onDeleteChat(chat.id)
                       }}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-all"
+                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-all hover:scale-110 active:scale-95"
                       aria-label="Delete chat"
                     >
                       <Trash2 className="w-4 h-4" />

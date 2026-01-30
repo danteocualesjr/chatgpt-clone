@@ -88,12 +88,17 @@
 
 /* Selection */
 ::selection {
-  @apply bg-primary/20;
+  @apply bg-primary/30 text-foreground;
 }
 
 /* Focus styles */
 :focus-visible {
-  @apply outline-none ring-2 ring-primary/30 ring-offset-2 ring-offset-background;
+  @apply outline-none ring-2 ring-primary/40 ring-offset-2 ring-offset-background;
+}
+
+button:focus-visible,
+a:focus-visible {
+  @apply ring-primary/50;
 }
 
 /* Animations */

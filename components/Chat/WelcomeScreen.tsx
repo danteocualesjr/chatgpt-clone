@@ -20,8 +20,8 @@ export function WelcomeScreen({ onSendMessage, disabled }: WelcomeScreenProps) {
       <div className="text-center max-w-2xl mx-auto">
         {/* Logo */}
         <div className="relative mb-10">
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/40 transition-shadow duration-500 hover:scale-105 transition-transform">
-            <Heart className="w-12 h-12 text-white" fill="white" />
+          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/40 transition-all duration-500 hover:scale-105 hover:rotate-3">
+            <Heart className="w-12 h-12 text-white transition-transform duration-500 hover:scale-110" fill="white" />
           </div>
         </div>
 

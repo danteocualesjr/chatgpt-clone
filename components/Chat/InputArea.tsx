@@ -145,28 +145,29 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
 
           {/* Attached files preview */}
           {attachedFiles.length > 0 && (
-            <div className="flex flex-wrap gap-2 p-3 pb-0 animate-fade-in">
+            <div className="flex flex-wrap gap-2.5 p-3.5 pb-2 animate-fade-in">
               {attachedFiles.map((file) => (
                 <div key={file.id} className="relative group animate-fade-in">
                   {file.type === 'image' && file.preview ? (
-                    <div className="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-border shadow-md">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border-2 border-border shadow-md hover:shadow-lg transition-all group-hover:scale-105">
                       <img
                         src={file.preview}
                         alt={file.file.name}
                         className="w-full h-full object-cover"
                       />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-muted border border-border">
-                      <FileText className="w-5 h-5 text-muted-foreground" />
-                      <span className="text-sm text-foreground max-w-[120px] truncate">
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-muted border border-border hover:border-primary/30 hover:shadow-md transition-all group-hover:scale-105">
+                      <FileText className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <span className="text-sm text-foreground max-w-[120px] truncate font-medium">
                         {file.file.name}
                       </span>
                     </div>
                   )}
                   <button
                     onClick={() => removeFile(file.id)}
-                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg hover:scale-110"
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg hover:scale-110 hover:bg-red-600 active:scale-95"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -180,7 +181,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
             {/* Attachment button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex-shrink-0 p-4 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex-shrink-0 p-4 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95"
               aria-label="Attach file"
             >
               <Paperclip className="w-5 h-5" />
@@ -204,14 +205,14 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               placeholder="Ask anything about health..."
               disabled={isLoading}
               rows={1}
-              className="flex-1 resize-none bg-transparent py-4 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px] leading-relaxed"
+              className="flex-1 resize-none bg-transparent py-4 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px] leading-relaxed focus:placeholder:text-muted-foreground/40 transition-colors"
             />
 
             {/* Right side buttons */}
             <div className="flex items-center gap-2 pr-3 pb-3">
               {/* Microphone button */}
               <button
-                className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all hover:scale-110 active:scale-95"
                 aria-label="Voice input"
               >
                 <Mic className="w-5 h-5" />

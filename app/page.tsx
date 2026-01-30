@@ -40,13 +40,13 @@ export default function Home() {
         {/* Dark mode toggle */}
         <button
           onClick={toggleDarkMode}
-          className="absolute top-4 right-4 p-2.5 rounded-xl bg-background/60 backdrop-blur-xl border border-border/50 hover:bg-background/80 transition-all duration-200 shadow-sm z-10"
+          className="group absolute top-4 right-4 p-2.5 rounded-xl bg-background/70 backdrop-blur-xl border border-border/50 hover:bg-background/90 hover:border-border/80 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-110 active:scale-95 z-10"
           aria-label="Toggle dark mode"
         >
           {darkMode ? (
-            <Sun className="w-5 h-5 text-amber-500" />
+            <Sun className="w-5 h-5 text-amber-500 group-hover:rotate-12 transition-transform duration-300" />
           ) : (
-            <Moon className="w-5 h-5 text-foreground" />
+            <Moon className="w-5 h-5 text-foreground group-hover:rotate-12 transition-transform duration-300" />
           )}
         </button>
       </main>
