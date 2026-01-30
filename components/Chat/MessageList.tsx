@@ -18,10 +18,10 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
   }, [messages])
 
   return (
-    <div ref={containerRef} className="h-full overflow-y-auto pt-14">
+    <div ref={containerRef} className="h-full overflow-y-auto pt-16 pb-4">
       <div className="max-w-3xl mx-auto px-4">
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} isLoading={isLoading} />
+        {messages.map((message, index) => (
+          <MessageBubble key={message.id} message={message} isLoading={isLoading && index === messages.length - 1} />
         ))}
         <div ref={messagesEndRef} className="h-4" />
       </div>

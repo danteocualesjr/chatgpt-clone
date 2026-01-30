@@ -48,9 +48,9 @@ export function Sidebar() {
         <div className="px-3 mb-1">
           <button
             onClick={createNewChat}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 border border-emerald-500/20 transition-all duration-200 text-foreground group"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 border border-emerald-500/20 transition-all duration-200 text-foreground group hover:shadow-lg hover:shadow-emerald-500/10"
           >
-            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Plus className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm font-medium">New chat</span>
@@ -59,8 +59,8 @@ export function Sidebar() {
 
         {/* Search */}
         <div className="px-3 py-2">
-          <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-foreground/5 transition-colors text-muted-foreground">
-            <Search className="w-4 h-4" />
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-foreground/5 transition-all duration-200 text-muted-foreground hover:text-foreground group">
+            <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
             <span className="text-sm">Search chats</span>
           </button>
         </div>
@@ -83,8 +83,8 @@ export function Sidebar() {
 
         {/* Footer */}
         <div className="p-3 border-t border-border/50">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-foreground/5 transition-colors">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md">
+          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-foreground/5 transition-all duration-200 group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
               <span className="text-white text-sm font-semibold">U</span>
             </div>
             <div className="flex-1 text-left">

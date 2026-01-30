@@ -117,6 +117,11 @@
   50% { transform: translateY(-4px); }
 }
 
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }

@@ -124,8 +124,8 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
         <div
           className={`relative flex flex-col rounded-3xl border transition-all duration-300 shadow-lg ${
             isDragging 
-              ? 'border-primary bg-primary/5 shadow-primary/20' 
-              : 'bg-card border-border shadow-black/5 dark:shadow-black/20'
+              ? 'border-primary bg-primary/5 shadow-primary/30 scale-[1.01]' 
+              : 'bg-card border-border shadow-black/5 dark:shadow-black/20 hover:shadow-xl hover:border-border/80'
           }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -204,7 +204,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               placeholder="Ask anything about health..."
               disabled={isLoading}
               rows={1}
-              className="flex-1 resize-none bg-transparent py-4 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px]"
+              className="flex-1 resize-none bg-transparent py-4 text-[15px] placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 max-h-[200px] leading-relaxed"
             />
 
             {/* Right side buttons */}
@@ -221,7 +221,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               {isLoading ? (
                 <button
                   onClick={onStop}
-                  className="p-2.5 rounded-xl bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg"
+                  className="p-2.5 rounded-xl bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg hover:scale-110 active:scale-95"
                   aria-label="Stop generation"
                 >
                   <Square className="w-5 h-5" fill="currentColor" />
@@ -230,7 +230,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
                 <button
                   onClick={handleSend}
                   disabled={!input.trim() && attachedFiles.length === 0}
-                  className="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/25 disabled:shadow-none"
+                  className="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/25 disabled:shadow-none hover:scale-110 active:scale-95 hover:shadow-emerald-500/40"
                   aria-label="Send message"
                 >
                   <ArrowUp className="w-5 h-5" strokeWidth={2.5} />
