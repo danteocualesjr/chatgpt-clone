@@ -183,6 +183,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               onClick={() => fileInputRef.current?.click()}
               className="flex-shrink-0 p-4 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95"
               aria-label="Attach file"
+              title="Attach file"
             >
               <Paperclip className="w-5 h-5" />
             </button>
@@ -214,6 +215,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
               <button
                 className="p-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all hover:scale-110 active:scale-95"
                 aria-label="Voice input"
+                title="Voice input"
               >
                 <Mic className="w-5 h-5" />
               </button>
@@ -224,6 +226,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
                   onClick={onStop}
                   className="p-2.5 rounded-xl bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg hover:scale-110 active:scale-95"
                   aria-label="Stop generation"
+                  title="Stop generation"
                 >
                   <Square className="w-5 h-5" fill="currentColor" />
                 </button>
@@ -233,6 +236,7 @@ export function InputArea({ onSend, onStop, isLoading }: InputAreaProps) {
                   disabled={!input.trim() && attachedFiles.length === 0}
                   className="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/25 disabled:shadow-none hover:scale-110 active:scale-95 hover:shadow-emerald-500/40"
                   aria-label="Send message"
+                  title="Send message (Enter)"
                 >
                   <ArrowUp className="w-5 h-5" strokeWidth={2.5} />
                 </button>

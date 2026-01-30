@@ -23,13 +23,13 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
   // Loading state for assistant
   if (!message.content && message.role === 'assistant') {
     return (
-      <div className="py-5 animate-fade-in">
+      <div className="py-5">
         <div className="flex gap-4">
-          <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 animate-pulse-soft">
             <Heart className="w-4.5 h-4.5 text-white" fill="white" />
           </div>
           <div className="flex-1 pt-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '0ms' }} />
               <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '150ms' }} />
               <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-bounce-soft" style={{ animationDelay: '300ms' }} />
@@ -41,7 +41,7 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
   }
 
   return (
-    <div className="py-5 animate-fade-in group/message">
+    <div className="py-5 group/message">
       <div className="flex gap-4">
         {/* Avatar for assistant */}
         {!isUser && (
@@ -56,11 +56,11 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
             <div className="flex flex-col items-end gap-3">
               {/* Attachments */}
               {message.attachments && message.attachments.length > 0 && (
-                <div className="flex flex-wrap gap-2 justify-end max-w-[85%]">
+                <div className="flex flex-wrap gap-2.5 justify-end max-w-[85%]">
                   {message.attachments.map((attachment) => (
-                    <div key={attachment.id} className="animate-fade-in">
+                    <div key={attachment.id} className="group/attachment animate-fade-in">
                       {attachment.type === 'image' ? (
-                        <div className="rounded-2xl overflow-hidden border-2 border-border shadow-lg max-w-xs">
+                        <div className="rounded-2xl overflow-hidden border-2 border-border shadow-lg max-w-xs hover:shadow-xl transition-all hover:scale-[1.02] cursor-pointer">
                           <img
                             src={attachment.url}
                             alt={attachment.name}
@@ -68,9 +68,9 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
                           />
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-muted border border-border">
-                          <FileText className="w-5 h-5 text-muted-foreground" />
-                          <span className="text-sm text-foreground">{attachment.name}</span>
+                        <div className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-muted border border-border hover:border-primary/30 hover:shadow-md transition-all group-hover/attachment:scale-105">
+                          <FileText className="w-5 h-5 text-muted-foreground group-hover/attachment:text-primary transition-colors" />
+                          <span className="text-sm text-foreground font-medium">{attachment.name}</span>
                         </div>
                       )}
                     </div>
@@ -80,8 +80,8 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
               
               {/* Text content */}
               {message.content && (
-                <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl rounded-br-lg px-5 py-3.5 max-w-[85%] shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-shadow">
-                  <p className="text-white whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl rounded-br-lg px-5 py-3.5 max-w-[85%] shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-[1.01]">
+                  <p className="text-white whitespace-pre-wrap leading-relaxed select-text">{message.content}</p>
                 </div>
               )}
             </div>
@@ -143,29 +143,33 @@ export function MessageBubble({ message, isLoading }: MessageBubbleProps) {
 
               {/* Action buttons */}
               {message.content && (
-                <div className="flex items-center gap-1 mt-5 opacity-0 group-hover/message:opacity-100 transition-opacity duration-200">
+                <div className="flex items-center gap-1 mt-5 opacity-0 group-hover/message:opacity-100 transition-opacity duration-300">
                   <button
                     onClick={handleCopy}
-                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110 active:scale-95"
                     aria-label="Copy message"
+                    title="Copy"
                   >
-                    {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                    {copied ? <Check className="w-4 h-4 text-emerald-500 animate-fade-in" /> : <Copy className="w-4 h-4" />}
                   </button>
                   <button
-                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110 active:scale-95"
                     aria-label="Good response"
+                    title="Good response"
                   >
                     <ThumbsUp className="w-4 h-4" />
                   </button>
                   <button
-                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110 active:scale-95"
                     aria-label="Bad response"
+                    title="Bad response"
                   >
                     <ThumbsDown className="w-4 h-4" />
                   </button>
                   <button
-                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110"
+                    className="p-2 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground transition-all hover:scale-110 active:scale-95"
                     aria-label="Regenerate response"
+                    title="Regenerate"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
